@@ -1,28 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1> Test socket </h1>
+    <div v-for="(msg, i) in messages" :key="i">
+      {{ msg }}
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import io from 'socket.io-client'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data () {
+    return {
+      messages: []
+    }
+  },
+  created () {
+    const socket = io('http://localhost:3000')
+    socket.on('test', (data) => {
+      this.messages.push(data)
+    })
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>
